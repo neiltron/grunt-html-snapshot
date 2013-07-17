@@ -45,17 +45,20 @@ module.exports = function(grunt) {
 
         phantom.on("htmlSnapshot.pageReady", function (msg, url) {
 
-            var plainUrl = url.replace(sitePath, '');
+            //only use the last bit of the url path
+            //this is for a specific use case and really shouldnt go upstream
+            var urlParts = url.replace(sitePath, '').split('/'),
+                plainUrl = urlParts[urlParts.length - 1];
 
-            var fileName =  options.snapshotPath + 
-                            options.fileNamePrefix + 
+            var fileName =  options.snapshotPath +
+                            options.fileNamePrefix +
                             sanitizeFilename(plainUrl) +
                             '.html';
 
             if (options.removeScripts){
                 msg = msg.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
             }
-            
+
             grunt.file.write(fileName, msg);
             grunt.log.writeln(fileName, 'written');
             phantom.halt();
@@ -69,7 +72,7 @@ module.exports = function(grunt) {
         var sitePath = options.sitePath;
 
         grunt.util.async.forEachSeries(urls, function(url, next) {
-            
+
             phantom.spawn(sitePath + url, {
                 // Additional PhantomJS options.
                 options: {
@@ -82,7 +85,7 @@ module.exports = function(grunt) {
                     if (err) {
                         // If there was an error, abort the series.
                         done();
-                    } 
+                    }
                     else {
                         // Otherwise, process next url.
                         next();
