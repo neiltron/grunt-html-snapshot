@@ -47,12 +47,14 @@ module.exports = function(grunt) {
 
             //only use the last bit of the url path
             //this is for a specific use case and really shouldnt go upstream
-            var urlParts = url.replace(sitePath, '').split('/'),
-                plainUrl = urlParts[urlParts.length - 1];
+
+            var plainUrl = url.replace(sitePath, ''),
+                urlParts = plainUrl.split('/'),
+                truncatedUrl = urlParts[urlParts.length - 1];
 
             var fileName =  options.snapshotPath +
                             options.fileNamePrefix +
-                            sanitizeFilename(plainUrl) +
+                            sanitizeFilename(truncatedUrl) +
                             '.html';
 
             if (options.removeScripts){
