@@ -54,8 +54,7 @@ module.exports = function(grunt) {
 
             var fileName =  options.snapshotPath +
                             options.fileNamePrefix +
-                            sanitizeFilename(truncatedUrl) +
-                            '.html';
+                            sanitizeFilename(truncatedUrl);
 
             if (options.removeScripts){
                 msg = msg.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
